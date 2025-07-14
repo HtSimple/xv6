@@ -440,3 +440,34 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
     return -1;
   }
 }
+
+
+// 递归打印页表
+void vmprint(pagetable_t pagetable, int depth) {
+  // 遍历页表中的每个条目 (512个PTE)
+  for (int i = 0; i < 512; i++) {
+    pte_t pte = pagetable[i];
+    
+    // 跳过无效的PTE
+    if ((pte & PTE_V) == 0)
+      continue;
+    
+    // 打印缩进 (根据深度)
+    printf("..");
+    for (int j = 1; j < depth; j++){
+        printf(" ..");
+    }
+    printf("%d: pte %p pa %p\n", i, pte, PTE2PA(pte));
+    
+    // 如果是页目录项 (非叶子节点)，递归打印下一级页表
+    if ((pte & (PTE_R | PTE_W | PTE_X)) == 0) {
+      vmprint((pagetable_t)PTE2PA(pte), depth + 1);
+    }
+  }
+}
+
+// 对外接口，用于从其他文件调用
+void vmprint_wrapper(pagetable_t pagetable) {
+  printf("page table %p\n", pagetable);
+  vmprint(pagetable, 1);
+}
