@@ -160,7 +160,7 @@ freeproc(struct proc *p)
   kfree(kstack_pa);
   p->kstack = 0;
 
-  // 递归释放进程独享的页表，释放页表本身所占用的空间，但**不释放页表指向的物理页**
+  // 递归释放进程独享的页表，释放页表本身所占用的空间
   kvm_free_kernelpgtbl(p->kernelpgtbl);
   p->kernelpgtbl = 0;
 
@@ -494,6 +494,9 @@ scheduler(void)
         sfence_vma(); // 清除快表缓存
 
         swtch(&c->context, &p->context);
+
+        // 切换回全局内核页表
+        kvminithart();
 
         // Process is done running for now.
         // It should have changed its p->state before coming back.
