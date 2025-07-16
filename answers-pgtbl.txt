@@ -1,0 +1,11 @@
+Print a page table 问题回答
+结合 RISC-V 页表结构（三级页表，对应 VPN [2]、VPN [1]、VPN [0]）：
+输出中缩进 ".." 数量对应页表层级（1 级、2 级、3 级），仅打印有效 PTE（Valid 位为 1）。
+页 0（VPN [0]=0）通常是用户程序的文本段（代码）。
+页 2（VPN [0]=2）可能是数据段或堆。
+页 1（VPN [0]=1）的 PTE 中写权限位（W）若为 1，用户态可读写；否则仅可读。示例中页 1 的 PTE 含 0xf，U位为0，故不可访问。
+
+Simplify copyin/copyinstr问题回答
+在copyin_new()中，第三个测试srcva + len < srcva是为了检测无符号整数溢出。
+当srcva和len足够大时，相加会导致溢出，使得结果反而小于srcva（例如，0xFFFFFFFF + 10会溢出为0x00000009，此时0x00000009 < 0xFFFFFFFF为真）。
+前两个测试无法捕捉这种情况，因此第三个测试是必要的。
