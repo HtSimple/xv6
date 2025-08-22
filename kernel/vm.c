@@ -391,8 +391,8 @@ copyin(pagetable_t pagetable, char *dst, uint64 srcva, uint64 len)
 {
   uint64 n, va0, pa0;
 
-    if(uvmshouldtouch(srcva))
-    uvmlazytouch(srcva);
+  if(uvmshouldtouch(srcva))
+  uvmlazytouch(srcva);
 
   while(len > 0){
     va0 = PGROUNDDOWN(srcva);
@@ -459,26 +459,26 @@ void uvmlazytouch(uint64 va) {
   struct proc *p = myproc();
   char *mem = kalloc();
   if(mem == 0) {
-    // 分配失败
+    // failed to allocate physical memory
     printf("lazy alloc: out of memory\n");
     p->killed = 1;
   } else {
     memset(mem, 0, PGSIZE);
-    //映射失败
     if(mappages(p->pagetable, PGROUNDDOWN(va), PGSIZE, (uint64)mem, PTE_W|PTE_X|PTE_R|PTE_U) != 0){
       printf("lazy alloc: failed to map page\n");
       kfree(mem);
       p->killed = 1;
     }
   }
-  printf("lazy alloc: %p, p->sz: %p\n", PGROUNDDOWN(va), p->sz);
+  // printf("lazy alloc: %p, p->sz: %p\n", PGROUNDDOWN(va), p->sz);
 }
 
-// 判断是否为需要懒分配的地址
+//判断是否为需要懒分配的地址
 int uvmshouldtouch(uint64 va) {
   pte_t *pte;
   struct proc *p = myproc();
   
-  return va < p->sz //在进程内存范围内不是栈保护页
-    && (((pte = walk(p->pagetable, va, 0))==0) || ((*pte & PTE_V)==0)); // 未映射
+  return va < p->sz // within size of memory for the process
+    && PGROUNDDOWN(va) != r_sp() // not accessing stack guard page (it shouldn't be mapped)
+    && (((pte = walk(p->pagetable, va, 0))==0) || ((*pte & PTE_V)==0)); // page table entry does not exist
 }
