@@ -2,13 +2,13 @@ Q:Which registers contain arguments to functions? For example, which register ho
 A:a0-a7;a2.
 
 Q:Where is the call to function f in the assembly code for main? Where is the call to g? (Hint: the compiler may inline functions.)
-A:Ã»ÓĞÖ±½Óµ÷ÓÃ£¬g()º¯ÊıÄÚÁªµ½f()º¯Êı£¬f()º¯ÊıÓÖÄÚÁªµ½main()º¯Êı
+A:æ²¡æœ‰ç›´æ¥è°ƒç”¨ï¼Œg()å‡½æ•°å†…è”åˆ°f()å‡½æ•°ï¼Œf()å‡½æ•°åˆå†…è”åˆ°main()å‡½æ•°
 
 Q:At what address is the function printf located?
-A:0x0000000000000616, main ÖĞÊ¹ÓÃ pc Ïà¶ÔÑ°Ö·À´¼ÆËãµÃµ½Õâ¸öµØÖ·¡£
+A:0x0000000000000616, main ä¸­ä½¿ç”¨ pc ç›¸å¯¹å¯»å€æ¥è®¡ç®—å¾—åˆ°è¿™ä¸ªåœ°å€ã€‚
 
 Q:What value is in the register ra just after the jalr to printf in main?
-A:0x0000000000000038, jalr Ö¸ÁîµÄÏÂÒ»Ìõ»ã±àÖ¸ÁîµÄµØÖ·¡£
+A:0x0000000000000038, jalr æŒ‡ä»¤çš„ä¸‹ä¸€æ¡æ±‡ç¼–æŒ‡ä»¤çš„åœ°å€ã€‚
 
 
 Q:Run the following code.
@@ -18,9 +18,9 @@ Q:Run the following code.
       
 What is the output? Here's an ASCII table that maps bytes to characters.
 The output depends on that fact that the RISC-V is little-endian. If the RISC-V were instead big-endian what would you set to in order to yield the same output? Would you need to change to a different value?i57616
-A:Êä³öÎª""He110 World"¡£big-endianÊ±£¬iÓ¦¸ÃÉèÖÃÎª 0x726c6400¡£
+A:è¾“å‡ºä¸º""He110 World"ã€‚big-endianæ—¶ï¼Œiåº”è¯¥è®¾ç½®ä¸º 0x726c6400ã€‚
 
 Q:In the following code, what is going to be printed after ? (note: the answer is not a specific value.) Why does this happen? 'y='
 	printf("x=%d y=%d", 3);
-A:Êä³öµÄÊÇÒ»¸öÊÜµ÷ÓÃÇ°µÄ´úÂëÓ°ÏìµÄ¡°Î´Öª¡±µÄÖµ¡£
-  ÒòÎª printf ³¢ÊÔ¶ÁµÄ²ÎÊıÊıÁ¿±ÈÌá¹©µÄ²ÎÊıÊıÁ¿¶à£¬µÚ¶ş¸ö²ÎÊı `3` Í¨¹ı a1 ´«µİ£¬¶øµÚÈı¸ö²ÎÊı¶ÔÓ¦µÄ¼Ä´æÆ÷ a2 ÔÚµ÷ÓÃÇ°²»»á±»ÉèÖÃÎªÈÎºÎ¾ßÌåµÄÖµ£¬¶øÊÇ»á°üº¬µ÷ÓÃ·¢ÉúÇ°µÄÒÑ¾­ÔÚÀïÃæµÄÖµ£¬¿´ÆğÀ´¾ÍÏñÊÇÊä³öÁËÒ»¸öËæ»úµÄ£¬Î´ÖªµÄÖµ¡£
+A:è¾“å‡ºçš„æ˜¯ä¸€ä¸ªå—è°ƒç”¨å‰çš„ä»£ç å½±å“çš„â€œæœªçŸ¥â€çš„å€¼ã€‚
+  å› ä¸º printf å°è¯•è¯»çš„å‚æ•°æ•°é‡æ¯”æä¾›çš„å‚æ•°æ•°é‡å¤šï¼Œç¬¬äºŒä¸ªå‚æ•° `3` é€šè¿‡ a1 ä¼ é€’ï¼Œè€Œç¬¬ä¸‰ä¸ªå‚æ•°å¯¹åº”çš„å¯„å­˜å™¨ a2 åœ¨è°ƒç”¨å‰ä¸ä¼šè¢«è®¾ç½®ä¸ºä»»ä½•å…·ä½“çš„å€¼ï¼Œè€Œæ˜¯ä¼šåŒ…å«è°ƒç”¨å‘ç”Ÿå‰çš„å·²ç»åœ¨é‡Œé¢çš„å€¼ï¼Œçœ‹èµ·æ¥å°±åƒæ˜¯è¾“å‡ºäº†ä¸€ä¸ªéšæœºçš„ï¼ŒæœªçŸ¥çš„å€¼ã€‚
